@@ -69,6 +69,29 @@ Monitor via:
 kubectl get pods,svc,httpproxy -l app=kuard
 ```
 
+This should show something like:
+
+```
+kubectl get po,svc,httpproxy -l app=kuard
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/kuard-6b65d9d8b5-drpqc   1/1     Running   0          2m
+pod/kuard-6b65d9d8b5-klzhf   1/1     Running   0          2m
+
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/kuard   ClusterIP   10.98.159.229   <none>        80/TCP    2m
+
+NAME                                     FQDN        TLS SECRET   STATUS   STATUS DESCRIPTION
+httpproxy.projectcontour.io/root-kuard   localhost                valid    valid HTTPProxy
+```
+
 and then go to http://localhost:80 in a browser to see kuard.
 
 Another good example that shows of using all the aspects of the Contour HTTPProxy, see the article ["HTTPProxy in Action"](https://projectcontour.io/httpproxy-in-action/) on the projectcontour.io blog.
+
+## monitoring
+
+See what Envoy is doing:
+
+```
+export ENVOYPOD=$(kubectl get pods -n projectcontour -l "app=envoy" -o jsonpath="{.items[0].metadata.name}") && kubectl -n projectcontour logs $ENVOYPOD -c envoy -f
+```
