@@ -23,9 +23,14 @@ kind-worker          Ready    <none>   10m   v1.16.1
 
 Contour uses Envoy to expose kubernetes externally.
 
+Either check out [contour](https://github.com/projectcontour/contour) to get the contour.yaml files or use the single consolidated file from https://projectcontour.io/quickstart/contour.yaml
+
 Check out contour and apply everything in examples/contour
 
 ```
+# from the project site
+# kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+# or from a local repo clone
 $ git clone https://github.com/projectcontour/contour
 $ kubectl apply -f contour/examples/contour
 namespace/projectcontour created
@@ -57,10 +62,10 @@ kubectl -n projectcontour get pods,ds,deployments,services
 
 Now you can add your own resources and front them with contour using contour's CRD HTTPProxy
 
-See kuard-httproxy.yaml as an example of a deployment of kuard with an HTTPProxy.
+See kuard-httpproxy.yaml as an example of a deployment of kuard with an HTTPProxy.
 
 ```bash
-kubectl apply -f kuard-httproxy.yaml
+kubectl apply -f kuard-httpproxy.yaml
 ```
 
 Monitor via:
