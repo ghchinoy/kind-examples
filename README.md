@@ -9,6 +9,20 @@ Set up a kind cluster exposing container ports using the `kind.config.yaml` whic
 kind create cluster --config kind.config.yaml
 ```
 
+Note, although normally kind can create multiple worker nodes, when exposing ports via the kind.config.yaml, only one worker can be used, as Docker can only route to one container.
+
+```bash
+$ kubectl get nodes
+NAME                 STATUS   ROLES    AGE   VERSION
+kind-control-plane   Ready    master   11m   v1.16.1
+kind-worker          Ready    <none>   10m   v1.16.1
+```
+
+
+# Contour
+
+Contour uses Envoy to expose kubernetes externally.
+
 Check out contour and apply everything in examples/contour
 
 ```
@@ -43,10 +57,10 @@ kubectl -n projectcontour get pods,ds,deployments,services
 
 Now you can add your own resources and front them with contour using contour's CRD HTTPProxy
 
-See kuard-contour.yaml as an example of a deployment of kuard with an HTTPProxy.
+See kuard-httproxy.yaml as an example of a deployment of kuard with an HTTPProxy.
 
 ```bash
-kubectl apply -f kuard-contour.yaml
+kubectl apply -f kuard-httproxy.yaml
 ```
 
 Monitor via:
@@ -55,4 +69,6 @@ Monitor via:
 kubectl get pods,svc,httpproxy -l app=kuard
 ```
 
-and then go to http://localhost:80 in a browser to see kuard
+and then go to http://localhost:80 in a browser to see kuard.
+
+Another good example that shows of using all the aspects of the Contour HTTPProxy, see the article ["HTTPProxy in Action"](https://projectcontour.io/httpproxy-in-action/) on the projectcontour.io blog.
